@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+{% block title %}Django Architecture Tutorial Dashboard{% endblock title %}
+
+{% block content %}
+<div class="py-5">
+  <!-- Header Section -->
+  <div class="text-center mb-5 pb-4 border-bottom">
+    <span class="badge bg-primary text-uppercase px-3 py-2 mb-2 rounded-pill fs-7 fw-semibold tracking-wider">Educational Demo</span>
+    <h1 class="display-4 fw-extrabold text-dark tracking-tight">Django Architecture Playbook</h1>
+    <p class="lead text-secondary max-w-2xl mx-auto">
+      A side-by-side comparison of <strong>Traditional Django (Fat Views / Generic CBVs)</strong> vs. <strong>Layered Architecture (Repository-Service-View)</strong>.
+    </p>
+  </div>
+
+  <!-- Comparison Summary Cards -->
+  <div class="row g-4 mb-5">
+    <div class="col-lg-6">
+      <div class="card h-100 border-0 shadow-sm rounded-4 hover-lift">
+        <div class="card-body p-4 p-xl-5">
+          <div class="d-flex align-items-center mb-4">
+            <div class="p-3 bg-danger bg-opacity-10 text-danger rounded-3 me-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-layers-half" viewBox="0 0 16 16">
+                <path d="M8.235 1.559a.5.5 0 0 0-.47 0L1.937 4.72a.5.5 0 0 0 0 .88L7.765 8.76a.5.5 0 0 0 .47 0l5.829-3.16a.5.5 0 0 0 0-.88L8.235 1.559zM1.937 10.165a.5.5 0 0 0 0 .88L7.765 14.2a.5.5 0 0 0 .47 0l5.829-3.16a.5.5 0 0 0 0-.88L8.235 10.165z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="h4 fw-bold mb-0">Path A: Traditional Django</h3>
+              <small class="text-muted">Standard Generic CBVs & Fat Views</small>
+            </div>
+          </div>
+          <p class="text-secondary mb-4">
+            Utilizes standard Django workflow where Class-Based Views perform direct database queries via the model ORM, handle form validation and model saves inside view methods (`form_valid()`), and coordinate error boundaries at the HTTP layer.
+          </p>
+          <ul class="list-unstyled mb-4 text-secondary">
+            <li class="mb-2"><span class="text-danger me-2">✗</span> <strong>Fat Views:</strong> Business logic, model saves, and authorization coupled to HTTP.</li>
+            <li class="mb-2"><span class="text-danger me-2">✗</span> <strong>ORM Coupling:</strong> Views must know database structure, filters, and fields.</li>
+            <li class="mb-2"><span class="text-success me-2">✓</span> <strong>Simplicity:</strong> Fast setup, excellent for simple CRUD & MVPs.</li>
+          </ul>
+          <a href="{% url 'courses:standard_list' %}" class="btn btn-outline-danger w-100 py-2.5 rounded-3 fw-bold">
+            Explore Path A (Standard) &rarr;
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="card h-100 border-0 shadow-sm rounded-4 hover-lift border-start border-primary border-3">
+        <div class="card-body p-4 p-xl-5">
+          <div class="d-flex align-items-center mb-4">
+            <div class="p-3 bg-primary bg-opacity-10 text-primary rounded-3 me-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-diagram-3-fill" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M6 3.5A1.5 1.5 0 0 1 7.5 2h1A1.5 1.5 0 0 1 10 3.5v1A1.5 1.5 0 0 1 8.5 6v1.5h3.879a1.5 1.5 0 0 1 1.06.44l1.42 1.42a1.5 1.5 0 0 1 .44 1.06v1a1.5 1.5 0 0 1-1.5 1.5h-1A1.5 1.5 0 0 1 11 11.5v-1a1.5 1.5 0 0 1 .44-1.06l1.42-1.42h-3.36V11.5a1.5 1.5 0 0 1-1.5 1.5h-1A1.5 1.5 0 0 1 6 11.5v-1.5H2.121a1.5 1.5 0 0 1-1.06-.44L.64 9.14a1.5 1.5 0 0 1-.44-1.06v-1A1.5 1.5 0 0 1 1.5 5.5h1A1.5 1.5 0 0 1 4 7v1.06l1.42 1.42h3.36V3.5z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="h4 fw-bold mb-0">Path B: Layered Architecture</h3>
+              <small class="text-primary fw-semibold">Repository - Service - Thin View Pattern</small>
+            </div>
+          </div>
+          <p class="text-secondary mb-4">
+            Isolates concerns across three distinct layers. Views remain thin, calling a Service which orchestrates logic and transactions. The Service queries DB records exclusively through a Repository, handling errors gracefully via Go-style return tuples.
+          </p>
+          <ul class="list-unstyled mb-4 text-secondary">
+            <li class="mb-2"><span class="text-success me-2">✓</span> <strong>Thin Views:</strong> HTTP routing and form rendering only. No model access.</li>
+            <li class="mb-2"><span class="text-success me-2">✓</span> <strong>Go-style tuples:</strong> Catch exceptions in services and return `(result, error)`.</li>
+            <li class="mb-2"><span class="text-success me-2">✓</span> <strong>Repository CRUD:</strong> Database queries and mutations fully isolated.</li>
+          </ul>
+          <a href="{% url 'courses:layered_list' %}" class="btn btn-primary w-100 py-2.5 rounded-3 fw-bold shadow-sm">
+            Explore Path B (Layered) &rarr;
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Deep Dive Comparison Table -->
+  <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-5">
+    <div class="card-header bg-dark text-white p-4">
+      <h3 class="h5 fw-bold mb-0">Architectural Layer Comparison</h3>
+      <p class="text-muted mb-0 fs-7">How each concern is handled side-by-side</p>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-light">
+          <tr>
+            <th scope="col" style="width: 20%;">Concept</th>
+            <th scope="col" style="width: 40%;" class="text-danger">Path A (Traditional)</th>
+            <th scope="col" style="width: 40%;" class="text-primary">Path B (Layered)</th>
+          </tr>
+        </thead>
+        <tbody class="text-secondary">
+          <tr>
+            <td class="fw-semibold text-dark">Data Access (ORM)</td>
+            <td>Direct queries inside Views (e.g. `Course.objects.filter(...)`).</td>
+            <td>Isolated in `CourseRepository`. Views call `CourseService`.</td>
+          </tr>
+          <tr>
+            <td class="fw-semibold text-dark">Business Logic</td>
+            <td>Mixed inside Views, Forms, or saved inside Model methods.</td>
+            <td>Encapsulated in `CourseService` methods.</td>
+          </tr>
+          <tr>
+            <td class="fw-semibold text-dark">Error Handling</td>
+            <td>Exceptions bubbled up to HTTP and caught by standard Django middleware.</td>
+            <td>Caught inside `Service`, returning Go-style tuples: `(result, error_msg)`.</td>
+          </tr>
+          <tr>
+            <td class="fw-semibold text-dark">Transaction Boundary</td>
+            <td>Database atomic transactions tied to HTTP requests (all-or-nothing).</td>
+            <td>Fine-grained transactions controlled programmatically in `Service`.</td>
+          </tr>
+          <tr>
+            <td class="fw-semibold text-dark">Audit Fields injection</td>
+            <td>Injected manually in view (`form.instance.created_by = request.user`).</td>
+            <td>Bound dynamically using `PermissionServiceMixin` and `CourseRepository(user)`.</td>
+          </tr>
+          <tr>
+            <td class="fw-semibold text-dark">Testability</td>
+            <td>Requires mocking HTTP requests and complete DB setup.</td>
+            <td>Repository and Service layers can be unit-tested without HTTP contexts.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<style>
+  .hover-lift {
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .hover-lift:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.1) !important;
+  }
+  .fs-7 {
+    font-size: 0.85rem;
+  }
+</style>
+{% endblock content %}
