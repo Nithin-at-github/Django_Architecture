@@ -1,29 +1,24 @@
-from typing import Any
-from typing import Generic
-from typing import TypeVar
 from django.db import models
 
-ModelT = TypeVar("ModelT", bound=models.Model)
 
-
-class PBBaseRepository(Generic[ModelT]):
+class PBBaseRepository:
     """Base repository class wrapping standard Django ORM queries and CRUD mutations."""
 
-    model: type[ModelT] = None
+    model = None
 
-    def __init__(self, user: Any = None) -> None:
+    def __init__(self, user=None):
         self.user = user
         if self.model is None:
             raise NotImplementedError("Concrete repository subclasses must specify a 'model' attribute.")
 
-    def fetch_queryset(self) -> models.QuerySet[ModelT]:
+    def fetch_queryset(self):
         """Returns the base QuerySet for the model.
 
         Concrete repositories should override or extend this to prefetch or filter queries.
         """
         return self.model.objects.all()
 
-    def get_by_id(self, pk: Any) -> ModelT | None:
+    def get_by_id(self, pk):
         """Fetches a single model instance by primary key.
 
         Returns None if the instance does not exist.
@@ -33,22 +28,22 @@ class PBBaseRepository(Generic[ModelT]):
         except self.model.DoesNotExist:
             return None
 
-    def create(self, **kwargs: Any) -> ModelT:
+    def create(self, **kwargs):
         """Creates and saves a new model instance."""
         return self.model.objects.create(**kwargs)
 
-    def update(self, instance: ModelT, **kwargs: Any) -> ModelT:
+    def update(self, instance, **kwargs):
         """Updates and saves an existing model instance with specified fields."""
         for field, value in kwargs.items():
             setattr(instance, field, value)
         instance.save()
         return instance
 
-    def delete(self, instance: ModelT) -> None:
+    def delete(self, instance):
         """Deletes a model instance from the database."""
         instance.delete()
 
-    def delete_multiple(self, queryset: models.QuerySet[ModelT]) -> int:
+    def delete_multiple(self, queryset):
         """Deletes all instances in the provided queryset.
 
         Returns the number of deleted records.
@@ -56,6 +51,6 @@ class PBBaseRepository(Generic[ModelT]):
         count, _ = queryset.delete()
         return count
 
-    def bulk_create(self, instances: list[ModelT], **kwargs: Any) -> list[ModelT]:
+    def bulk_create(self, instances, **kwargs):
         """Creates multiple model instances in bulk."""
         return self.model.objects.bulk_create(instances, **kwargs)

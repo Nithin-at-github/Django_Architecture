@@ -31,5 +31,5 @@ class Course(models.Model):
         verbose_name_plural = "courses"
         ordering = ["-created_at"]
 
-    def __str__(self) -> str:
+    def __str__(self):
         return f"{self.code} - {self.title}"

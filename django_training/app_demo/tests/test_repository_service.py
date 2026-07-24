@@ -1,7 +1,5 @@
 import pytest
 from django.contrib.auth import get_user_model
-from django.db import IntegrityError
-from django_training.app_demo.models import Course
 from django_training.app_demo.repositories.course import CourseRepository
 from django_training.app_demo.services.course import CourseService
 
@@ -12,7 +10,7 @@ User = get_user_model()
 class TestCourseRepository:
     """Tests the CourseRepository functionality and ORM abstractions."""
 
-    def test_create_without_user(self) -> None:
+    def test_create_without_user(self):
         repo = CourseRepository()
         course = repo.create(
             title="Introduction to Programming",
@@ -24,7 +22,7 @@ class TestCourseRepository:
         assert course.code == "CS-101"
         assert course.created_by is None
 
-    def test_create_with_user_context(self) -> None:
+    def test_create_with_user_context(self):
         user = User.objects.create_user(username="testteacher", password="password123")
         repo = CourseRepository(user=user)
         course = repo.create(
@@ -36,7 +34,7 @@ class TestCourseRepository:
         assert course.pk is not None
         assert course.created_by == user
 
-    def test_get_by_id(self) -> None:
+    def test_get_by_id(self):
         repo = CourseRepository()
         course = repo.create(
             title="Algorithms",
@@ -49,7 +47,7 @@ class TestCourseRepository:
 
         assert repo.get_by_id(9999) is None
 
-    def test_update_and_delete(self) -> None:
+    def test_update_and_delete(self):
         repo = CourseRepository()
         course = repo.create(
             title="Algorithms",
@@ -71,7 +69,7 @@ class TestCourseRepository:
 class TestCourseService:
     """Tests the CourseService layer, business logic orchestration, and Go-style error handling."""
 
-    def test_create_success(self) -> None:
+    def test_create_success(self):
         service = CourseService()
         course, error = service.create(
             {
@@ -85,7 +83,7 @@ class TestCourseService:
         assert course is not None
         assert course.code == "CS-401"
 
-    def test_create_failure_uniqueness_constraint(self) -> None:
+    def test_create_failure_uniqueness_constraint(self):
         # Create initial record
         service = CourseService()
         service.create(
@@ -111,7 +109,7 @@ class TestCourseService:
         assert error is not None
         assert "UNIQUE constraint failed" in error or "duplicate key" in error or "CS-301" in error
 
-    def test_list_courses_filters(self) -> None:
+    def test_list_courses_filters(self):
         service = CourseService()
         service.create(
             {

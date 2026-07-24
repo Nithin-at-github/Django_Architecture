@@ -3,16 +3,16 @@ from django_training.app_base.services.base import PBBaseService
 from django_training.app_demo.repositories.course import CourseRepository
 
 
-class CourseService(PBBaseService[CourseRepository]):
+class CourseService(PBBaseService):
     """Service layer orchestrating business logic and filtering for Course objects."""
 
     repository_class = CourseRepository
 
     def list_courses(
         self,
-        search_query: str | None = None,
-        is_active: bool | None = None,
-        sort_by: str | None = None,
+        search_query=None,
+        is_active=None,
+        sort_by=None,
     ):
         """Lists courses with optional search terms and activity filters."""
         def _list():
