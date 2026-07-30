@@ -1,11 +1,7 @@
 from django.contrib import messages
 from django.http import Http404
 from django.shortcuts import redirect
-from django.views.generic import CreateView
-from django.views.generic import DeleteView
-from django.views.generic import ListView
-from django.views.generic import UpdateView
-
+from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
 class PermissionServiceMixin:
     """Mixin to dynamically instantiate and bind request.user to a Service class."""

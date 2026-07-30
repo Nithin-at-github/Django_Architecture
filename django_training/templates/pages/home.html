@@ -1,3 +1,27 @@
 {% extends "base.html" %}
 
+{% block title %}Home - Django Training{% endblock title %}
 
+{% block content %}
+<div class="row align-items-center justify-content-center py-5">
+  <div class="col-lg-8 text-center">
+    <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5">
+      <div class="card-body">
+        <span class="badge bg-primary text-uppercase px-3 py-2 mb-3 rounded-pill fw-semibold">Layered Architecture
+          Demo</span>
+        <h1 class="display-5 fw-extrabold text-dark tracking-tight mb-3">Welcome to Django Training</h1>
+        <p class="lead text-secondary mb-4 mx-auto" style="max-width: 600px;">
+          Learn modern Django development patterns by exploring our side-by-side comparison of traditional model views
+          vs. clean layered architecture.
+        </p>
+        <div class="d-flex justify-content-center gap-3">
+          <a href="{% url 'courses:layered_list' %}"
+            class="btn btn-primary btn-lg px-4 py-2.5 rounded-3 fw-bold shadow-sm">
+            Manage Courses (Layered)
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
